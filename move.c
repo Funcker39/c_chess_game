@@ -1,0 +1,3 @@
+int canMove(board board) {
+
+}
