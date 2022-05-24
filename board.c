@@ -1,22 +1,4 @@
-enum pieceType {
-    out,
-    empty,
-    pawn,
-    bishop,
-    knight,
-    rook,
-    queen,
-    king
-};
-
-struct board {
-    int dimension;
-    enum pieceType cases[12][12];
-};
-
-typedef struct board board;
-
-void initBoard(board* board, int dim) {
+void initBoard(enum pieceType* board, int dim) {
     board->dimension = dim;
 
     for (int x = 0; x < dim; x++) {

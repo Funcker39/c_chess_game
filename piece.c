@@ -1,4 +1,6 @@
 enum pieceType {
+    out,
+    empty,
     pawn,
     bishop,
     knight,
