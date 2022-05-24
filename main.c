@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 enum pieceType {
     out = 0,
@@ -39,8 +40,6 @@ typedef struct {
     int color;
 } piece;
 
-piece board[12][12];
-
 void initBoard(piece board[12][12], int dimension) {
 
     // Assignation aléatoire de la position des 2 rois (noir et blanc)
@@ -76,26 +75,49 @@ void initBoard(piece board[12][12], int dimension) {
     }
 };
 
-void printBoard(piece board[12][12]) {
-    printf("     ");
-    for (int x = 0; x < 12; x++) {
+void printBoard(piece board[12][12], int dimension) {
+    printf("       ");
+    for (int x = 0; x < dimension; x++) {
         printf("%c   ", 65 + x);
     }
-    printf("\n\n");
-    for (int x = 0; x < 12; x++) {
-        if (x < 10) printf(" ");
-        printf("%d   ", x);
-        for (int y = 0; y < 12; y++) {
+    printf("\n\n\n");
+    for (int x = 0; x < dimension; x++) {
+        if (dimension - x < 10) printf(" ");
+        printf("%d     ", dimension - x);
+
+
+        for (int y = 0; y < dimension; y++) {
             printf("%d   ", board[y][x].type);
         }
         printf ("\n\n");
     }
 }
 
-void canMove(piece board[12][12], int from[2], int to[2], int turnColor) {
+void canMove(piece board[12][12], int from[2], char to[2], int turnColor) {
     piece selectedPiece = board[from[0]][from[1]];
-    printf("\nTrying to move piece %c%c", pieceChars[selectedPiece.type], colorChars[selectedPiece.color]);
+    printf("\nVous voulez déplacer la pièce %c%c vers %c%c\n", 
+        pieceChars[selectedPiece.type], colorChars[selectedPiece.color],
+        to[0], to[1]);
 }
+
+/*void getPieceString(piece board[12][12], int pos[2], char *pieceString[2]) {
+    piece selectedPiece = board[pos[0]][pos[1]];
+    pieceString[0] = pieceChars[selectedPiece.type];
+    pieceString[1] = colorChars[selectedPiece.color];
+    return pieceString;
+}
+
+void getUserMove(int dimension, int *move[2]) {
+    char input[3];
+    scanf("%s", &input);
+    move[0] = input[0] - 65;
+    char secondPart[2] = {input[1], input[2]};
+    move[1] = dimension - atoi(secondPart);
+}*/
+
+piece board[12][12];
+int gameOver = 0;
+int turn = white;
 
 void main() {
 
@@ -103,11 +125,52 @@ void main() {
     while (dimension < 6 || dimension > 12) {
         printf("Entrez la dimension de plateau souhaitée (6-12):\n");
         scanf("%d", &dimension);
+        getchar();
     }
 
     srand(time(NULL));
 
     initBoard(board, dimension);
 
-    printBoard(board);
+    printBoard(board, dimension);
+
+    sleep(0.1);
+    do {
+        int correctMove = 1;
+        int fromMove[2];
+        do {
+            printf("Choisissez une pièce à déplacer (A-%c):", dimension + 64);
+            
+            char input[3];
+            scanf("%s", &input);
+            fromMove[0] = input[0] - 65;
+            char secondPart[2] = {input[1], input[2]};
+            fromMove[1] = dimension - atoi(secondPart);
+
+            if (fromMove[0] < 0 || fromMove[0] >= dimension) correctMove = 0;
+            if (fromMove[1] < 0 || fromMove[1] >= dimension) correctMove = 0;
+
+        } while (!correctMove);
+
+        char toMove[2];
+        do {
+            piece selectedPiece = board[fromMove[0]][fromMove[1]];
+            printf("Choisissez la case où vous voulez déplacer la pièce %c%c:", 
+                pieceChars[selectedPiece.type], colorChars[selectedPiece.color]);
+            
+            char input[3];
+            scanf("%s", &input);
+            toMove[0] = input[0] - 65;
+            char secondPart[2] = {input[1], input[2]};
+            toMove[1] = dimension - atoi(secondPart);
+
+            if (toMove[0] < 0 || toMove[0] >= dimension) correctMove = 0;
+            if (toMove[1] < 0 || toMove[1] >= dimension) correctMove = 0;
+
+        } while (!correctMove);
+        
+        canMove(board, fromMove, toMove, turn);
+        
+        break;
+    } while (!gameOver);
 }
