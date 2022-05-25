@@ -1,18 +1,20 @@
+
+
 enum pieceType {
-    out,
-    empty,
-    pawn,
-    bishop,
-    knight,
-    rook,
-    queen,
-    king
+    out = 0,
+    empty = 1,
+    pawn = 2,
+    bishop = 3,
+    knight = 4,
+    rook = 5,
+    queen = 6,
+    king = 7
 };
 
-struct piece
-{
-    int pos[2];
-    enum pieceType type;
-};
 
-typedef struct piece piece;
+typedef struct {
+    int type;
+    int color;
+} piece;
+
+
