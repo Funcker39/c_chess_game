@@ -1,3 +1,0 @@
-int canMove(board board) {
-
-}

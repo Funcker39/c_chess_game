@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include "utilities.h"
 
 enum pieceType {
     out = 0,
@@ -93,11 +94,38 @@ void printBoard(piece board[12][12], int dimension) {
     }
 }
 
-void canMove(piece board[12][12], int from[2], char to[2], int turnColor) {
+int canMovePiece(piece board[12][12], int dimension, int piecePos[2], int turnColor) {
+    piece selectedPiece = board[piecePos[0]][piecePos[1]];
+
+    switch (selectedPiece.type) {
+        case out:
+            printf("La case choisie est hors du plateau.\n");
+            return 0;
+        case empty:
+            printf("Il n'y a pas de pièce sur la case choisie.\n");
+            return 0;
+    }
+
+    if (!(selectedPiece.color & turnColor)) {
+        printf("La pièce choisie ne vous appartient pas.\n");
+        return 0;
+    }
+
+    return 1;
+}
+
+int canMove(piece board[12][12], int dimension, int from[2], int to[2], int turnColor) {
     piece selectedPiece = board[from[0]][from[1]];
-    printf("\nVous voulez déplacer la pièce %c%c vers %c%c\n", 
+    printf("\nVous voulez déplacer la pièce %c%c vers %c%d\n", 
         pieceChars[selectedPiece.type], colorChars[selectedPiece.color],
-        to[0], to[1]);
+        numberToAsciiLetter(to[0]), dimension - to[1]);
+
+    
+    switch (selectedPiece.type) {
+        case pawn:
+            printf("");
+            break;
+    }
 }
 
 /*void getPieceString(piece board[12][12], int pos[2], char *pieceString[2]) {
@@ -139,6 +167,7 @@ void main() {
         int correctMove = 1;
         int fromMove[2];
         do {
+            correctMove = 1;
             printf("Choisissez une pièce à déplacer (A-%c):", dimension + 64);
             
             char input[3];
@@ -150,12 +179,13 @@ void main() {
             if (fromMove[0] < 0 || fromMove[0] >= dimension) correctMove = 0;
             if (fromMove[1] < 0 || fromMove[1] >= dimension) correctMove = 0;
 
+            correctMove = canMovePiece(board, dimension, fromMove, turn);
         } while (!correctMove);
 
-        char toMove[2];
+        int toMove[2];
         do {
             piece selectedPiece = board[fromMove[0]][fromMove[1]];
-            printf("Choisissez la case où vous voulez déplacer la pièce %c%c:", 
+            printf("Choisissez la case où vous voulez déplacer votre %c%c:", 
                 pieceChars[selectedPiece.type], colorChars[selectedPiece.color]);
             
             char input[3];
@@ -169,7 +199,7 @@ void main() {
 
         } while (!correctMove);
         
-        canMove(board, fromMove, toMove, turn);
+        canMove(board, dimension, fromMove, toMove, turn);
         
         break;
     } while (!gameOver);
