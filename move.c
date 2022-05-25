@@ -27,7 +27,7 @@ int canMovePiece(piece board[12][12], int dimension, int piecePos[2], int turnCo
             return 0;
     }
 
-    if (!(selectedPiece.color & turnColor)) {
+    if (selectedPiece.color != turnColor) {
         printf("La pièce choisie ne vous appartient pas.\n");
         return 0;
     }
