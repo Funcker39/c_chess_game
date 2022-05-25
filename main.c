@@ -7,7 +7,7 @@
 #include "board.h"
 #include "enum.c"
 #include "menu.h"
-
+#include "utilities.h"
 
 
 
@@ -30,7 +30,7 @@ void getUserMove(int dimension, int *move[2]) {
 piece board[12][12];
 int gameOver = 0;
 int turn = white;
- int dimension = 0;
+int dimension = 0;
 void main() {
 
     int choice = menu();
@@ -42,7 +42,7 @@ void main() {
                 printf("Entrez la dimension de plateau souhaitée (6-12):\n");
                 scanf("%d", &dimension);
                 getchar();
-            }
+                }
 
             srand(time(NULL));
 
@@ -55,44 +55,43 @@ void main() {
                 int correctMove = 1;
                 int fromMove[2];
                 do {
+                    correctMove = 1;
                     printf("Choisissez une pièce à déplacer (A-%c):", dimension + 64);
                     
                     char input[3];
                     scanf("%s", &input);
                     fromMove[0] = input[0] - 65;
-                   
                     char secondPart[2] = {input[1], input[2]};
                     fromMove[1] = dimension - atoi(secondPart);
 
                     if (fromMove[0] < 0 || fromMove[0] >= dimension) correctMove = 0;
                     if (fromMove[1] < 0 || fromMove[1] >= dimension) correctMove = 0;
 
+                    correctMove = canMovePiece(board, dimension, fromMove, turn);
                 } while (!correctMove);
 
-                char toMove[2];
+                int toMove[2];
                 do {
                     piece selectedPiece = board[fromMove[0]][fromMove[1]];
-                    printf("Choisissez la case où vous voulez déplacer la pièce %c%c:", 
+                    printf("Choisissez la case où vous voulez déplacer votre %c%c:", 
                         pieceChars[selectedPiece.type], colorChars[selectedPiece.color]);
                     
                     char input[3];
                     scanf("%s", &input);
                     toMove[0] = input[0] - 65;
-                    
                     char secondPart[2] = {input[1], input[2]};
                     toMove[1] = dimension - atoi(secondPart);
-                
+
                     if (toMove[0] < 0 || toMove[0] >= dimension) correctMove = 0;
                     if (toMove[1] < 0 || toMove[1] >= dimension) correctMove = 0;
 
                 } while (!correctMove);
-            
-            
-                canMove(board, fromMove, toMove, turn);
+                
+                canMove(board, dimension, fromMove, toMove, turn);
                 
                 break;
             } while (!gameOver);
-            break;
+                    break;
         default:
             printf("WIP");
     }
