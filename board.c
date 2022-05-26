@@ -40,6 +40,7 @@ void initBoard(piece board[12][12], int dimension) {
 };
 
 void printBoard(piece board[12][12], int dimension) {
+   
     printf("       ");
     for (int x = 0; x < dimension; x++) {
         printf("%c   ", 65 + x);
@@ -82,6 +83,7 @@ void printBoard(piece board[12][12], int dimension) {
                 case 7:
                     printf("| R |");
                 default:
+                 
                     break;
 
             }

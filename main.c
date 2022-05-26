@@ -8,7 +8,7 @@
 #include "enum.c"
 #include "menu.h"
 #include "utilities.h"
-
+#include "sauvegarde.h"
 
 
 
@@ -47,7 +47,7 @@ void main() {
             srand(time(NULL));
 
             initBoard(board, dimension);
-
+            saveBoard(board,dimension);
             printBoard(board, dimension);
 
             sleep(0.1);
@@ -92,6 +92,12 @@ void main() {
                 break;
             } while (!gameOver);
                     break;
+        case 2:
+         
+            break;
+        case 3:
+            loadBoard();
+            break;
         default:
             printf("WIP");
     }

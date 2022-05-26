@@ -1,5 +1,5 @@
-#ifndef __MOVE_H__
-#define __MOVE_H__
+#ifndef __UTILITIES_H__
+#define __UTILITIES_H__
 #include<stdio.h>
 
 

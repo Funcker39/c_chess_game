@@ -1,5 +1,4 @@
 
-
 enum pieceType {
     out = 0,
     empty = 1,
@@ -16,5 +15,4 @@ typedef struct {
     int type;
     int color;
 } piece;
-
 

@@ -1,4 +1,5 @@
 #include "globalVar.h"
+
 char pieceChars[8] = {
     '/',
     '-',
