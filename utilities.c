@@ -6,3 +6,4 @@ int numberToAsciiLetter(int val) {
 int AsciiLettertoNumber(int val) {
     return val - 65;
 }
+

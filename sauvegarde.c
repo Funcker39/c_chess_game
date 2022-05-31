@@ -1,8 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
 #include "sauvegarde.h"
 #include "board.h"
+#include "struct.c"
+
+
+
 
 void saveBoard(piece board[12][12],int dimension){
     FILE *saveFile;
@@ -21,17 +26,17 @@ void saveBoard(piece board[12][12],int dimension){
 
 }
 
-void loadBoard(){
+struct board_struct loadBoard(){
     int dim;
            
   
     int row_count =0;
     int col_count = 0;
     piece test;
-    piece savedBoard[12][12];
+  
 
     FILE *saveFile;
-
+    struct board_struct savedStruct;
  
     saveFile = fopen("save.bin","rb");
 
@@ -44,7 +49,7 @@ void loadBoard(){
         
             if(col_count<dim){
         
-                savedBoard[col_count][row_count]=test;
+                savedStruct.board[col_count][row_count]=test;
              
             
             }
@@ -54,7 +59,7 @@ void loadBoard(){
            
                 
                 row_count+=1;
-                savedBoard[col_count][row_count]=test;
+                savedStruct.board[col_count][row_count]=test;
            
             }
           
@@ -68,8 +73,9 @@ void loadBoard(){
 
    
     fclose(saveFile);
-
-    printBoard(savedBoard,dim);
+    
+    savedStruct.dim=dim;
+    return savedStruct;
     
 
    

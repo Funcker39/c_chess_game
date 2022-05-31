@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "utilities.h"
 #include "sauvegarde.h"
+#include "struct.c"
 
 
 
@@ -93,10 +94,12 @@ void main() {
             } while (!gameOver);
                     break;
         case 2:
-         
+
             break;
-        case 3:
-            loadBoard();
+        case 3:;
+            struct board_struct savedBoard = loadBoard();
+           
+            printBoard(savedBoard.board,savedBoard.dim);
             break;
         default:
             printf("WIP");
