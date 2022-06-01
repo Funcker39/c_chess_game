@@ -21,8 +21,9 @@ void saveBoard(piece board[12][12],int dimension){
        
      }
  
- 
     fclose(saveFile);
+
+    printf("\nPartie sauvegardée avec succès.");
 
 }
 

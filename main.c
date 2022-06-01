@@ -32,6 +32,19 @@ piece board[12][12];
 int gameOver = 0;
 int turn = white;
 int dimension = 0;
+
+int checkInput(char input) {
+    /*if (input == 'S') {
+        saveBoard(board, dimension);
+        return 1;
+    }*/
+    if (input == 'S') {
+        saveBoard(board, dimension);
+        return 1;
+    }
+    return 0;
+}
+
 void main() {
 
     int choice = menu();
@@ -40,7 +53,7 @@ void main() {
         case 1:
            
             while (dimension < 6 || dimension > 12) {
-                printf("Entrez la dimension de plateau souhaitée (6-12):\n");
+                printf("\nEntrez la dimension de plateau souhaitée (6-12):\n");
                 scanf("%d", &dimension);
                 getchar();
                 }
@@ -51,44 +64,53 @@ void main() {
             saveBoard(board,dimension);
             printBoard(board, dimension);
 
-            sleep(0.1);
             do {
-                int correctMove = 1;
+                int correctMove = 0;
                 int fromMove[2];
                 do {
-                    correctMove = 1;
-                    printf("Choisissez une pièce à déplacer (A-%c):", dimension + 64);
+                    correctMove = 0;
+                    printf("\nChoisissez une pièce à déplacer (A-%c):", dimension + 64);
                     
                     char input[3];
                     scanf("%s", &input);
+                    if (checkInput(input[0])) {
+                        continue;
+                    }
+
                     fromMove[0] = input[0] - 65;
                     char secondPart[2] = {input[1], input[2]};
                     fromMove[1] = dimension - atoi(secondPart);
 
-                    if (fromMove[0] < 0 || fromMove[0] >= dimension) correctMove = 0;
-                    if (fromMove[1] < 0 || fromMove[1] >= dimension) correctMove = 0;
+                    if (fromMove[0] >= 0 && fromMove[0] < dimension) correctMove = 1;
+                    if (fromMove[1] >= 0 && fromMove[1] < dimension) correctMove = 1;
 
-                    correctMove = canMovePiece(board, dimension, fromMove, turn);
+                    correctMove = canChoosePiece(board, dimension, fromMove, turn);
                 } while (!correctMove);
 
                 int toMove[2];
                 do {
+                    correctMove = 0;
+
                     piece selectedPiece = board[fromMove[0]][fromMove[1]];
-                    printf("Choisissez la case où vous voulez déplacer votre %c%c:", 
+                    printf("\nChoisissez la case où vous voulez déplacer votre %c%c:", 
                         pieceChars[selectedPiece.type], colorChars[selectedPiece.color]);
                     
                     char input[3];
                     scanf("%s", &input);
+                    if (checkInput(input[0])) {
+                        continue;
+                    }
+
                     toMove[0] = input[0] - 65;
                     char secondPart[2] = {input[1], input[2]};
                     toMove[1] = dimension - atoi(secondPart);
 
-                    if (toMove[0] < 0 || toMove[0] >= dimension) correctMove = 0;
-                    if (toMove[1] < 0 || toMove[1] >= dimension) correctMove = 0;
+                    if (toMove[0] >= 0 && toMove[0] < dimension) correctMove = 1;
+                    if (toMove[1] >= 0 && toMove[1] < dimension) correctMove = 1;
 
                 } while (!correctMove);
                 
-                canMove(board, dimension, fromMove, toMove, turn);
+                canMovePiece(board, dimension, fromMove, toMove, turn);
                 
                 break;
             } while (!gameOver);

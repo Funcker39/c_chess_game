@@ -1,7 +1,7 @@
 #include "move.h"
 #include "globalVar.h"
 
-int canMove(piece board[12][12], int dimension, int from[2], int to[2], int turnColor) {
+int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int turnColor) {
     piece selectedPiece = board[from[0]][from[1]];
     printf("\nVous voulez déplacer la pièce %c%c vers %c%d\n", 
         pieceChars[selectedPiece.type], colorChars[selectedPiece.color],
@@ -15,7 +15,7 @@ int canMove(piece board[12][12], int dimension, int from[2], int to[2], int turn
     }
 }
 
-int canMovePiece(piece board[12][12], int dimension, int piecePos[2], int turnColor) {
+int canChoosePiece(piece board[12][12], int dimension, int piecePos[2], int turnColor) {
     piece selectedPiece = board[piecePos[0]][piecePos[1]];
 
     switch (selectedPiece.type) {
