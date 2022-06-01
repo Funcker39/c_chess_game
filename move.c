@@ -9,13 +9,32 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
 
     printf("From %d;%d to %d;%d", from[0], from[1], to[0], to[1]);
 
-    
+    if(board[to[0]][to[1]].type !=empty){
+        return 0;
+    }
     switch (selectedPiece.type) {
         case pawn:
             if (to[0] == from[0] && to[1] == from[1] - 1) {
                 return 1;
             }
             break;
+        case bishop:
+            if(abs(to[0]-from[0])==abs(to[1]-from[1])){
+                return 1;
+            }  
+            break;
+        case rook:
+            if(to[0]==from[0] || to[1]==from[1]){
+                return 1;
+            }
+            break;
+        case queen:
+            if((abs(to[0]-from[0])==abs(to[1]-from[1]))||(to[0]==from[0] || to[1]==from[1])){
+                return 1;
+            }
+            break;
+     
+        
     }
 
     return 0;

@@ -19,7 +19,7 @@ void initBoard(piece board[12][12], int dimension) {
         for (int y = 0; y < 2; y++) {
             if (board[x][y].type & king) continue;
             
-            board[x][y].type = rand() % 4 + 2;
+            board[x][y].type = rand() % 5 + 2;
             board[x][y].color = black;
         }
         for (int y = 2; y < dimension - 2; y++) {
@@ -28,7 +28,7 @@ void initBoard(piece board[12][12], int dimension) {
         for (int y = dimension - 2; y < dimension; y++) {
             if (board[x][y].type & king) continue;
             
-            board[x][y].type = rand() % 4 + 2;
+            board[x][y].type = rand() % 5 + 2;
             board[x][y].color = white;
         }
     }

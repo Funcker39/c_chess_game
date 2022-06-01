@@ -98,6 +98,7 @@ void main() {
                 }
 
                 updateBoard(board, dimension, fromMove, toMove);
+                turn=black;
 
             } while (!gameOver);
 
