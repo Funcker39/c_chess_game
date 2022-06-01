@@ -11,33 +11,12 @@
 #include "sauvegarde.h"
 #include "struct.c"
 
-
-
-/*void getPieceString(piece board[12][12], int pos[2], char *pieceString[2]) {
-    piece selectedPiece = board[pos[0]][pos[1]];
-    pieceString[0] = pieceChars[selectedPiece.type];
-    pieceString[1] = colorChars[selectedPiece.color];
-    return pieceString;
-}
-
-void getUserMove(int dimension, int *move[2]) {
-    char input[3];
-    scanf("%s", &input);
-    move[0] = input[0] - 65;
-    char secondPart[2] = {input[1], input[2]};
-    move[1] = dimension - atoi(secondPart);
-}*/
-
 piece board[12][12];
 int gameOver = 0;
 int turn = white;
 int dimension = 0;
 
 int checkInput(char input) {
-    /*if (input == 'S') {
-        saveBoard(board, dimension);
-        return 1;
-    }*/
     if (input == 'S') {
         saveBoard(board, dimension);
         return 1;
