@@ -7,12 +7,18 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
         pieceChars[selectedPiece.type], colorChars[selectedPiece.color],
         numberToAsciiLetter(to[0]), dimension - to[1]);
 
+    printf("From %d;%d to %d;%d", from[0], from[1], to[0], to[1]);
+
     
     switch (selectedPiece.type) {
         case pawn:
-            printf("");
+            if (to[0] == from[0] && to[1] == from[1] - 1) {
+                return 1;
+            }
             break;
     }
+
+    return 0;
 }
 
 int canChoosePiece(piece board[12][12], int dimension, int piecePos[2], int turnColor) {

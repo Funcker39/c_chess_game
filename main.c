@@ -41,9 +41,10 @@ void main() {
 
             initBoard(board, dimension);
             saveBoard(board,dimension);
-            printBoard(board, dimension);
 
             do {
+                printBoard(board, dimension);
+
                 int correctMove = 0;
                 int fromMove[2];
                 do {
@@ -89,11 +90,18 @@ void main() {
 
                 } while (!correctMove);
                 
-                canMovePiece(board, dimension, fromMove, toMove, turn);
+                correctMove = canMovePiece(board, dimension, fromMove, toMove, turn);
                 
-                break;
+                if (!correctMove) {
+                    printf("\nDéplacement interdit.");
+                    continue;
+                }
+
+                updateBoard(board, dimension, fromMove, toMove);
+
             } while (!gameOver);
-                    break;
+
+            break;
         case 2:
 
             break;

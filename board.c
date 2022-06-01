@@ -4,6 +4,8 @@
 #include <time.h>
 #include <unistd.h>
 #include "enum.c"
+
+
 void initBoard(piece board[12][12], int dimension) {
 
     // Assignation aléatoire de la position des 2 rois (noir et blanc)
@@ -41,19 +43,19 @@ void initBoard(piece board[12][12], int dimension) {
 
 void printBoard(piece board[12][12], int dimension) {
    
-    printf("       ");
+    printf("\n\n      ");
     for (int x = 0; x < dimension; x++) {
-        printf("%c   ", 65 + x);
+        printf("%c    ", 65 + x);
     }
-    printf("\n\n\n");
-    printf("       ");
-     for(int j =  0;j<(dimension*3)-3;j++){
-            printf("_ ");
+    printf("\n");
+    printf("     ");
+     for(int j =  0;j<(int)(dimension*2.5);j++){
+            printf("- ");
     }
-    printf("\n\n");
+    printf("\n");
     for (int x = 0; x < dimension; x++) {
         if (dimension - x < 10) printf(" ");
-        printf("%d    ", dimension - x);
+        printf("%d  ", dimension - x);
 
     
         for (int y = 0; y < dimension; y++) {
@@ -91,8 +93,12 @@ void printBoard(piece board[12][12], int dimension) {
         }
         printf("\033[0m");
         printf ("\n\n");
-           
- 
-       
     }
+}
+
+void updateBoard(piece board[12][12], int dimension, int from[2], int to[2]) {
+    piece selectedPiece = board[from[0]][from[1]];
+    board[from[0]][from[1]].type = empty;
+    board[to[0]][to[1]].type = selectedPiece.type;
+    board[to[0]][to[1]].color = selectedPiece.color;
 }
