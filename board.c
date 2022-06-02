@@ -25,6 +25,7 @@ void initBoard(piece board[12][12], int dimension) {
         for (int y = 2; y < dimension - 2; y++) {
             board[x][y].type = empty;
         }
+
         for (int y = dimension - 2; y < dimension; y++) {
             if (board[x][y].type & king) continue;
             
@@ -45,11 +46,11 @@ void printBoard(piece board[12][12], int dimension) {
    
     printf("\n\n      ");
     for (int x = 0; x < dimension; x++) {
-        printf("%c    ", 65 + x);
+        printf("%c     ", 65 + x);
     }
     printf("\n");
     printf("     ");
-     for(int j =  0;j<(int)(dimension*2.5);j++){
+     for(int j =  0;j<(int)(dimension*3);j++){
             printf("- ");
     }
     printf("\n");
@@ -60,35 +61,63 @@ void printBoard(piece board[12][12], int dimension) {
     
         for (int y = 0; y < dimension; y++) {
             if(x==0 || x==1){
-                printf("\033[0;34m");
-            }
-         
-            switch(board[y][x].type){
+                  switch(board[y][x].type){
                 case 1:
                     printf("|   |");
                     break;
                 case 2:
-                    printf("| P |");
+                    printf("| PN |");
                     break;
                 case 3:
-                    printf("| F |");
+                    printf("| FN |");
                     break;
                 case 4:
-                    printf("| C |");
+                    printf("| CN |");
                     break;
                 case 5:
-                    printf("| T |");
+                    printf("| TN |");
                     break;
                 case 6:
-                    printf("| D |");
+                    printf("| DN |");
                     break;
                 case 7:
-                    printf("| R |");
+                    printf("| RN |");
                 default:
                  
                     break;
 
             }
+            }
+            else{
+                  switch(board[y][x].type){
+                case 1:
+                    printf("|    |");
+                    break;
+                case 2:
+                    printf("| PB |");
+                    break;
+                case 3:
+                    printf("| FB |");
+                    break;
+                case 4:
+                    printf("| CB |");
+                    break;
+                case 5:
+                    printf("| TB |");
+                    break;
+                case 6:
+                    printf("| DB |");
+                    break;
+                case 7:
+                    printf("| RB |");
+                default:
+                 
+                    break;
+
+            }
+            }
+         
+          
          
         }
         printf("\033[0m");

@@ -14,26 +14,35 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
     }
     switch (selectedPiece.type) {
         case pawn:
-            if (to[0] == from[0] && to[1] == from[1] - 1) {
+            if (movePawn(from,to)) {
                 return 1;
             }
             break;
         case bishop:
-            if(abs(to[0]-from[0])==abs(to[1]-from[1])){
+            if(moveBishop(from,to)){
                 return 1;
             }  
             break;
         case rook:
-            if(to[0]==from[0] || to[1]==from[1]){
+            if(moveRook(from,to)){
+                return 1;
+            }
+            break;
+        case knight:
+            if(moveKnight(from,to)){
                 return 1;
             }
             break;
         case queen:
-            if((abs(to[0]-from[0])==abs(to[1]-from[1]))||(to[0]==from[0] || to[1]==from[1])){
+            if(moveQueen(from,to)){
                 return 1;
             }
             break;
-     
+        case king:
+            if(moveKing(from,to)){
+                return 1;
+            }
+            break;
         
     }
 
@@ -59,3 +68,52 @@ int canChoosePiece(piece board[12][12], int dimension, int piecePos[2], int turn
 
     return 1;
 }
+
+
+bool movePawn(int from[2],int to[2]){
+    if (to[0] == from[0] && to[1] == from[1] - 1) {
+            return true;
+    }
+    return false;
+
+}
+bool moveBishop(int from[2],int to[2]){
+    if(abs(to[0]-from[0])==abs(to[1]-from[1])){
+                return true;
+        } 
+    return false; 
+}
+
+bool moveRook(int from[2],int to[2]){
+    if(to[0]==from[0] || to[1]==from[1]){
+            return true;
+        }
+    return false;
+}
+
+bool moveKnight(int from[2],int to[2]){
+
+    if(abs((abs(to[0]-from[0])-abs(to[1]-from[1])))==1){
+        
+        return true;
+    }
+    return false;
+}
+
+bool moveQueen(int from[2],int to[2]){
+    if((abs(to[0]-from[0])==abs(to[1]-from[1]))||(to[0]==from[0] || to[1]==from[1])){
+        return true;
+    }
+    return false;
+}
+
+bool moveKing(int from[2],int to[2]){
+    if((abs(to[0]-from[0])==abs(to[1]-from[1])==1) || (to[0]==from[0]-1 && to[1]==from[1]) || (to[0]==from[0]+1 && to[1]==from[1]) ||(to[0] == from[0] && to[1] == from[1] - 1) ||(to[0] == from[0] && to[1] == from[1] +1))
+        {
+            return true;
+        }
+    return false;
+
+}
+
+

@@ -43,6 +43,7 @@ void main() {
             saveBoard(board,dimension);
 
             do {
+                
                 printBoard(board, dimension);
 
                 int correctMove = 0;
@@ -98,7 +99,12 @@ void main() {
                 }
 
                 updateBoard(board, dimension, fromMove, toMove);
-                turn=black;
+               if(turn ==black){
+                    turn = white;
+                }
+                else{
+                    turn = black;
+                }
 
             } while (!gameOver);
 
