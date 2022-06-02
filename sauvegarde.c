@@ -9,10 +9,11 @@
 
 
 
-void saveBoard(piece board[12][12],int dimension){
+void saveBoard(piece board[12][12],int dimension,int turn){
     FILE *saveFile;
     saveFile = fopen("save.bin","w");
     fprintf(saveFile,"Dimension: %d",dimension);
+    fprintf(saveFile,"Turn: %d",turn);
     for(int i =0;i<dimension;i++){
          
             for(int j =0;j<dimension;j++){
@@ -29,6 +30,7 @@ void saveBoard(piece board[12][12],int dimension){
 
 struct board_struct loadBoard(){
     int dim;
+    int turn;
            
   
     int row_count =0;
@@ -44,6 +46,10 @@ struct board_struct loadBoard(){
     
 
     if(fscanf(saveFile,"Dimension: %d",&dim)!=EOF){
+         printf("");
+    }
+
+    if(fscanf(saveFile,"Turn: %d",&turn)!=EOF){
          printf("");
     }
     while(fread(&test,sizeof(piece),1,saveFile) ){
@@ -76,6 +82,7 @@ struct board_struct loadBoard(){
     fclose(saveFile);
     
     savedStruct.dim=dim;
+    savedStruct.turn=turn;
     return savedStruct;
     
 

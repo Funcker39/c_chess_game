@@ -13,36 +13,19 @@
 
 piece board[12][12];
 int gameOver = 0;
-int turn = white;
+
 int dimension = 0;
 
-int checkInput(char input) {
+int checkInput(char input,int turn) {
     if (input == 'S') {
-        saveBoard(board, dimension);
+        saveBoard(board, dimension,turn);
         return 1;
     }
     return 0;
 }
 
-void main() {
-
-    int choice = menu();
-    
-    switch (choice){
-        case 1:
-           
-            while (dimension < 6 || dimension > 12) {
-                printf("\nEntrez la dimension de plateau souhaitée (6-12):\n");
-                scanf("%d", &dimension);
-                getchar();
-                }
-
-            srand(time(NULL));
-
-            initBoard(board, dimension);
-            saveBoard(board,dimension);
-
-            do {
+void game(piece board[12][12],int dimension,int turn){
+    do {
                 
                 printBoard(board, dimension);
 
@@ -54,7 +37,7 @@ void main() {
                     
                     char input[3];
                     scanf("%s", &input);
-                    if (checkInput(input[0])) {
+                    if (checkInput(input[0],turn)) {
                         continue;
                     }
 
@@ -78,7 +61,7 @@ void main() {
                     
                     char input[3];
                     scanf("%s", &input);
-                    if (checkInput(input[0])) {
+                    if (checkInput(input[0],turn)) {
                         continue;
                     }
 
@@ -107,19 +90,45 @@ void main() {
                 }
 
             } while (!gameOver);
+}
 
-            break;
-        case 2:
+void main() {
 
-            break;
-        case 3:;
-            struct board_struct savedBoard = loadBoard();
+    int choice = menu();
+    
+    switch (choice){
+        
+        case 1:
            
-            printBoard(savedBoard.board,savedBoard.dim);
+            while (dimension < 6 || dimension > 12) {
+                printf("\nEntrez la dimension de plateau souhaitée (6-12):\n");
+                scanf("%d", &dimension);
+                getchar();
+                }
+
+            srand(time(NULL));
+
+            initBoard(board, dimension);
+            int turn = white;
+            game(board,dimension,turn);
+
+            
+
+            break;
+        case 2:;
+            struct board_struct savedStruct = loadBoard();
+            game(savedStruct.board,savedStruct.dim,savedStruct.turn);
+            break;
+        case 3:
+            printf("Merci d'avoir jouer, au revoir ! ");
+            system("exit");
             break;
         default:
-            printf("WIP");
+            printf("Merci de choisir un nombre entre 1 et 3 pour effectuer une action");
+            break;
     }
 
     
 }
+
+
