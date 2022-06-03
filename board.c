@@ -63,7 +63,7 @@ void printBoard(piece board[12][12], int dimension) {
             if(board[y][x].color==black){
                   switch(board[y][x].type){
                 case 1:
-                    printf("|   |");
+                    printf("|    |");
                     break;
                 case 2:
                     printf("| PN |");

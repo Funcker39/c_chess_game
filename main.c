@@ -16,119 +16,126 @@ int gameOver = 0;
 
 int dimension = 0;
 
-int checkInput(char input,int turn) {
-    if (input == 'S') {
-        saveBoard(board, dimension,turn);
+int checkInput(char input, int turn)
+{
+    if (input == 'S')
+    {
+        saveBoard(board, dimension, turn);
         return 1;
     }
     return 0;
 }
 
-void game(piece board[12][12],int dimension,int turn){
-    do {
-                
-                printBoard(board, dimension);
+void game(piece board[12][12], int dimension, int turn)
+{
+    do
+    {
 
-                int correctMove = 0;
-                int fromMove[2];
-                do {
-                    correctMove = 0;
-                    printf("\nChoisissez une pièce à déplacer (A-%c):", dimension + 64);
-                    
-                    char input[3];
-                    scanf("%s", &input);
-                    if (checkInput(input[0],turn)) {
-                        continue;
-                    }
+        printBoard(board, dimension);
 
-                    fromMove[0] = input[0] - 65;
-                    char secondPart[2] = {input[1], input[2]};
-                    fromMove[1] = dimension - atoi(secondPart);
+        int correctMove = 0;
+        int fromMove[2];
+        do
+        {
+            correctMove = 0;
+            printf("\nC'est au tour des ");
+            turn ? printf("noirs.") : printf("blancs.");
+            printf("\nChoisissez une pièce à déplacer (A-%c):", dimension + 64);
 
-                    if (fromMove[0] >= 0 && fromMove[0] < dimension) correctMove = 1;
-                    if (fromMove[1] >= 0 && fromMove[1] < dimension) correctMove = 1;
+            char input[3];
+            scanf("%s", &input);
+            if (checkInput(input[0], turn))
+            {
+                continue;
+            }
 
-                    correctMove = canChoosePiece(board, dimension, fromMove, turn);
-                } while (!correctMove);
+            fromMove[0] = input[0] - 65;
+            char secondPart[2] = {input[1], input[2]};
+            fromMove[1] = dimension - atoi(secondPart);
 
-                int toMove[2];
-                do {
-                    correctMove = 0;
+            if (fromMove[0] >= 0 && fromMove[0] < dimension)
+                correctMove = 1;
+            if (fromMove[1] >= 0 && fromMove[1] < dimension)
+                correctMove = 1;
 
-                    piece selectedPiece = board[fromMove[0]][fromMove[1]];
-                    printf("\nChoisissez la case où vous voulez déplacer votre %c%c:", 
-                        pieceChars[selectedPiece.type], colorChars[selectedPiece.color]);
-                    
-                    char input[3];
-                    scanf("%s", &input);
-                    if (checkInput(input[0],turn)) {
-                        continue;
-                    }
+            correctMove = canChoosePiece(board, dimension, fromMove, turn);
+        } while (!correctMove);
 
-                    toMove[0] = input[0] - 65;
-                    char secondPart[2] = {input[1], input[2]};
-                    toMove[1] = dimension - atoi(secondPart);
+        int toMove[2];
+        do
+        {
+            correctMove = 0;
 
-                    if (toMove[0] >= 0 && toMove[0] < dimension) correctMove = 1;
-                    if (toMove[1] >= 0 && toMove[1] < dimension) correctMove = 1;
+            piece selectedPiece = board[fromMove[0]][fromMove[1]];
+            printf("\nChoisissez la case où vous voulez déplacer votre %c%c:",
+                   pieceChars[selectedPiece.type], colorChars[selectedPiece.color]);
 
-                } while (!correctMove);
-                
-                correctMove = canMovePiece(board, dimension, fromMove, toMove, turn);
-                
-                if (!correctMove) {
-                    printf("\nDéplacement interdit.");
-                    continue;
-                }
+            char input[3];
+            scanf("%s", &input);
+            if (checkInput(input[0], turn))
+            {
+                continue;
+            }
 
-                updateBoard(board, dimension, fromMove, toMove);
-               if(turn ==black){
-                    turn = white;
-                }
-                else{
-                    turn = black;
-                }
+            toMove[0] = input[0] - 65;
+            char secondPart[2] = {input[1], input[2]};
+            toMove[1] = dimension - atoi(secondPart);
 
-            } while (!gameOver);
+            if (toMove[0] >= 0 && toMove[0] < dimension)
+                correctMove = 1;
+            if (toMove[1] >= 0 && toMove[1] < dimension)
+                correctMove = 1;
+
+        } while (!correctMove);
+
+        correctMove = canMovePiece(board, dimension, fromMove, toMove, turn);
+
+        if (!correctMove)
+        {
+            printf("\nDéplacement interdit.");
+            continue;
+        }
+
+        updateBoard(board, dimension, fromMove, toMove);
+        turn = !turn;
+
+    } while (!gameOver);
 }
 
-void main() {
+void main()
+{
 
     int choice = menu();
-    
-    switch (choice){
-        
-        case 1:
-           
-            while (dimension < 6 || dimension > 12) {
-                printf("\nEntrez la dimension de plateau souhaitée (6-12):\n");
-                scanf("%d", &dimension);
-                getchar();
-                }
 
-            srand(time(NULL));
+    switch (choice)
+    {
 
-            initBoard(board, dimension);
-            int turn = white;
-            game(board,dimension,turn);
+    case 1:
 
-            
+        while (dimension < 6 || dimension > 12)
+        {
+            printf("\nEntrez la dimension de plateau souhaitée (6-12):\n");
+            scanf("%d", &dimension);
+            getchar();
+        }
 
-            break;
-        case 2:;
-            struct board_struct savedStruct = loadBoard();
-            game(savedStruct.board,savedStruct.dim,savedStruct.turn);
-            break;
-        case 3:
-            printf("Merci d'avoir jouer, au revoir ! ");
-            system("exit");
-            break;
-        default:
-            printf("Merci de choisir un nombre entre 1 et 3 pour effectuer une action");
-            break;
+        srand(time(NULL));
+
+        initBoard(board, dimension);
+        int turn = white;
+        game(board, dimension, turn);
+
+        break;
+    case 2:;
+        struct board_struct savedStruct = loadBoard();
+        game(savedStruct.board, savedStruct.dim, savedStruct.turn);
+        break;
+    case 3:
+        printf("Merci d'avoir jouer, au revoir ! ");
+        system("exit");
+        break;
+    default:
+        printf("Merci de choisir un nombre entre 1 et 3 pour effectuer une action");
+        break;
     }
-
-    
 }
-
-

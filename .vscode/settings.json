@@ -10,6 +10,15 @@
         "vector": "c",
         "functional": "c",
         "typeinfo": "c",
-        "*.inc": "c"
+        "*.inc": "c",
+        "globalvar.h": "c",
+        "move.h": "c",
+        "*.tcc": "c",
+        "chrono": "c",
+        "cmath": "c",
+        "numeric": "c",
+        "ratio": "c",
+        "cinttypes": "c",
+        "cstdlib": "c"
     }
 }
