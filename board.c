@@ -127,9 +127,9 @@ void printBoard(piece board[12][12], int dimension) {
 
 void updateBoard(piece board[12][12], int dimension, int from[2], int to[2]) {
     piece selectedPiece = board[from[0]][from[1]];
-    printf("%d",selectedPiece.color);
+    //printf("%d",selectedPiece.color);
     board[from[0]][from[1]].type = empty;
     board[to[0]][to[1]].type = selectedPiece.type;
     board[to[0]][to[1]].color = selectedPiece.color;
-    printf("%d", board[to[0]][to[1]].color);
+    //printf("%d", board[to[0]][to[1]].color);
 }

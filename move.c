@@ -10,10 +10,10 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
 
     printf("From %d;%d to %d;%d", from[0], from[1], to[0], to[1]);
 
-    if (board[to[0]][to[1]].type != empty)
+    /*if (board[to[0]][to[1]].type != empty)
     {
         return 0;
-    }
+    }*/
     switch (selectedPiece.type)
     {
     case pawn:
@@ -23,7 +23,7 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
         }
         break;
     case bishop:
-        if (moveBishop(from, to))
+        if (moveBishop(board, from, to))
         {
             return 1;
         }
@@ -80,6 +80,10 @@ int canChoosePiece(piece board[12][12], int dimension, int piecePos[2], int turn
     return 1;
 }
 
+void printBlockedPiece() {
+    printf("\nLa case que vous voulez atteindre n'est pas accessible.");
+}
+
 bool isInCheck(piece board[12][12], int dimension, int color)
 {
 }
@@ -93,10 +97,26 @@ bool movePawn(int from[2], int to[2], int color)
     return false;
 }
 
-bool moveBishop(int from[2], int to[2])
+bool moveBishop(piece board[12][12], int from[2], int to[2])
 {
-    if (abs(to[0] - from[0]) == abs(to[1] - from[1]))
+    int horDelta = to[0] - from[0];
+    int vertDelta = to[1] - from[1];
+    if (abs(horDelta) == abs(vertDelta))
     {
+        int horDir = horDelta / abs(horDelta);
+        int vertDir = vertDelta / abs(vertDelta);
+        int pos[2] = {from[0], from[1]};
+        for (int i = 0; i < abs(horDelta) - 1; i++) {
+            pos[0] += horDir;
+            pos[1] += vertDir;
+
+            piece curPiece = board[pos[0]][pos[1]];
+
+            if (curPiece.type != empty) {
+                printBlockedPiece();
+                return false;
+            }
+        }
         return true;
     }
     return false;
