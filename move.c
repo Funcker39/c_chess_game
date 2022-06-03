@@ -10,14 +10,14 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
 
     printf("From %d;%d to %d;%d", from[0], from[1], to[0], to[1]);
 
-    /*if (board[to[0]][to[1]].type != empty)
+    if (board[to[0]][to[1]].type != empty && board[to[0]][to[1]].color==selectedPiece.color)
     {
         return 0;
-    }*/
+    }
     switch (selectedPiece.type)
     {
     case pawn:
-        if (movePawn(from, to, turnColor))
+        if (movePawn(board,from, to, turnColor))
         {
             return 1;
         }
@@ -29,7 +29,7 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
         }
         break;
     case rook:
-        if (moveRook(from, to))
+        if (moveRook(board,from, to))
         {
             return 1;
         }
@@ -41,7 +41,7 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
         }
         break;
     case queen:
-        if (moveQueen(from, to))
+        if (moveQueen(board,from, to))
         {
             return 1;
         }
@@ -88,11 +88,30 @@ bool isInCheck(piece board[12][12], int dimension, int color)
 {
 }
 
-bool movePawn(int from[2], int to[2], int color)
+bool movePawn(piece board[12][12],int from[2], int to[2], int color)
 {
-    if (to[0] == from[0] && to[1] == from[1] + color ? -1 : 1)
+
+    int horDelta = to[0] - from[0];
+    int vertDelta = to[1] - from[1];
+    int val=-1;
+    if(color){
+        val =1;
+    }
+  
+
+
+    if (to[0] == from[0] && to[1] == from[1]+val )
     {
+        if(board[to[0]][to[1]].type!=empty){
+            printBlockedPiece();
+            return false;
+        }
         return true;
+    }
+    if(abs(abs(horDelta)-abs(vertDelta))==0){
+        if(board[to[0]][to[1]].type!=empty){
+            return true;
+        }
     }
     return false;
 }
@@ -122,12 +141,54 @@ bool moveBishop(piece board[12][12], int from[2], int to[2])
     return false;
 }
 
-bool moveRook(int from[2], int to[2])
+bool moveRook(piece board[12][12],int from[2], int to[2])
 {
-    if (to[0] == from[0] || to[1] == from[1])
+
+
+    int vertDelta = to[1]-from[1]; 
+    int horDelta = to[0]-from[0];
+    int pos[2]={from[0],from[1]};
+    if (to[0] == from[0])
     {
+        int vertDir = vertDelta/abs(vertDelta);
+    
+        for (int i =0;i<abs(vertDelta)-1;i++){
+       
+            pos[1]+=vertDir;
+         
+            piece curPiece = board[pos[0]][pos[1]];
+
+            if(curPiece.type!=empty){
+                printBlockedPiece();
+                return false;
+            }
+        }
         return true;
+        
+
+      
     }
+    if (to[1] == from[1])
+    {
+        int horDir = horDelta/abs(horDelta);
+    
+        for (int i =0;i<abs(horDelta)-1;i++){
+       
+            pos[0]+=horDir;
+         
+            piece curPiece = board[pos[0]][pos[1]];
+
+            if(curPiece.type!=empty){
+                printBlockedPiece();
+                return false;
+            }
+        }
+        return true;
+        
+
+      
+    }
+
     return false;
 }
 
@@ -142,10 +203,9 @@ bool moveKnight(int from[2], int to[2])
     return false;
 }
 
-bool moveQueen(int from[2], int to[2])
+bool moveQueen(piece board[12][12],int from[2], int to[2])
 {
-    if ((abs(to[0] - from[0]) == abs(to[1] - from[1])) || (to[0] == from[0] || to[1] == from[1]))
-    {
+    if(moveBishop(board,from,to)||moveRook(board,from,to)){
         return true;
     }
     return false;
