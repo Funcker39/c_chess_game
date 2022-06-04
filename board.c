@@ -12,25 +12,25 @@ void initBoard(piece board[12][12], int dimension) {
     board[rand() % dimension][0].type = king;
     board[rand() % dimension][0].color = black;
     board[rand() % dimension][dimension - 1].type = king;
-    board[rand() % dimension][dimension - 1].color = white;
+    board[rand() % dimension][dimension - 1].color = black;
 
 
     for (int x = 0; x < dimension; x++) {
         for (int y = 0; y < 2; y++) {
-            if (board[x][y].type & king) continue;
-            
-            board[x][y].type = rand() % 5 + 2;
             board[x][y].color = black;
+            
+            if (board[x][y].type == king) continue;
+            board[x][y].type = rand() % 5 + 2;
         }
         for (int y = 2; y < dimension - 2; y++) {
             board[x][y].type = empty;
         }
 
         for (int y = dimension - 2; y < dimension; y++) {
-            if (board[x][y].type & king) continue;
-            
-            board[x][y].type = rand() % 5 + 2;
             board[x][y].color = white;
+            
+            if (board[x][y].type == king) continue;
+            board[x][y].type = rand() % 5 + 2;
         }
     }
 

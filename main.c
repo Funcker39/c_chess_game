@@ -88,7 +88,8 @@ void game(piece board[12][12], int dimension, int turn)
 
         } while (!correctMove);
 
-        correctMove = canMovePiece(board, dimension, fromMove, toMove, turn);
+        //printf("\nMoving %d;%d to %d;%d", fromMove[0], fromMove[1], toMove[0], toMove[1]);
+        correctMove = canMovePiece(board, dimension, fromMove, toMove, turn, 1);
 
         if (!correctMove)
         {
