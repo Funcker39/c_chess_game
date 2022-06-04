@@ -30,8 +30,6 @@ void game(piece board[12][12], int dimension, int turn)
 {
     do
     {
-        printBoard(board, dimension);
-
         int correctMove = 0;
         int fromMove[2];
         int inCheck = 0;
@@ -41,12 +39,18 @@ void game(piece board[12][12], int dimension, int turn)
             if (isInCheckMate(board, dimension, turn))
             {
                 gameOver = true;
-                printf("\n\nGAME OVER\n");
+                printf("\n========\nGAME OVER\n========");
                 printf("\nVictoire des ");
                 turn ? printf("blancs.") : printf("noirs.");
                 return;
             }
         }
+        else {
+            inCheck = 0;
+        }
+
+        printBoard(board, dimension);
+
         do
         {
             correctMove = 0;

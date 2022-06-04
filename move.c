@@ -15,10 +15,11 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
         printf("From %d;%d to %d;%d", from[0], from[1], to[0], to[1]);
     }*/
 
+    //printf("\nTrying to move from %d;%d to %d;%d", from[0], from[1],to[0], to[1]);
     int canMove = 0;
 
-    if (from[0] < 0 || from[0] >= 12 || from[1] < 0 || from[1] >= 12 ||
-        to[0] < 0 || to[0] >= 12 || to[1] < 0 || to[1] >= 12)
+    if (from[0] < 0 || from[0] >= dimension || from[1] < 0 || from[1] >= dimension ||
+        to[0] < 0 || to[0] >= dimension || to[1] < 0 || to[1] >= dimension)
         return 0;
 
     if (board[to[0]][to[1]].type != empty && board[to[0]][to[1]].color == selectedPiece.color)
@@ -67,6 +68,7 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
 
     if (canMove && checkTest)
     {
+        //printf("\nCanMove");
         piece tmpBoard[12][12];
 
         for (int x = 0; x < 12; x++)
@@ -116,7 +118,6 @@ void printBlockedPiece()
 
 int isInCheck(piece board[12][12], int dimension, int color)
 {
-    //printf("\ncheckColor:%d", color);
     int playerKingPos[2];
     int opponentPiecesPos[dimension * 2][2];
     int opponentPiecesIndex = 0;
@@ -147,12 +148,12 @@ int isInCheck(piece board[12][12], int dimension, int color)
     {
         if (canMovePiece(board, dimension, opponentPiecesPos[k], playerKingPos, !color, 0))
         {
-            printBoard(board, dimension);
+            /*printBoard(board, dimension);
             printf("\nPos roi:%d-%d", playerKingPos[0], playerKingPos[1]);
             printf("\nEchec à cause de %d-%d, type:%d, color:%d", opponentPiecesPos[k][0], opponentPiecesPos[k][1],
-                   board[opponentPiecesPos[k][0]][opponentPiecesPos[k][1]].type, board[opponentPiecesPos[k][0]][opponentPiecesPos[k][1]].color);
-            printf("\nCe déplacement vous mets en échec.");
-            return 1;
+                   board[opponentPiecesPos[k][0]][opponentPiecesPos[k][1]].type, board[opponentPiecesPos[k][0]][opponentPiecesPos[k][1]].color);*/
+            //printf("\nCe déplacement vous mets en échec.");
+            return 1;   
         }
     }
     return 0;
@@ -213,9 +214,10 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
             for (int i = 0; i < dimension; i++)
             {
                 int moves1[4][2] = {{i, i}, {i, -i}, {-i, i}, {-i, -i}};
-                for (int i = 0; i < 4; i++)
+                
+                for (int k = 0; k < 4; k++)
                 {
-                    int move[2] = {curPiecePos[0] + moves[i][0], curPiecePos[1] + moves[i][1]};
+                    int move[2] = {curPiecePos[0] + moves1[k][0], curPiecePos[1] + moves1[k][1]};
                     if (canMovePiece(board, dimension, curPiecePos, move, color, 1))
                     {
                         return 0;
@@ -227,7 +229,7 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
             int moves2[8][2] = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {-1, 2}, {1, -2}, {-1, -2}};
             for (int i = 0; i < 8; i++)
             {
-                int move[2] = {curPiecePos[0] + moves[i][0], curPiecePos[1] + moves[i][1]};
+                int move[2] = {curPiecePos[0] + moves2[i][0], curPiecePos[1] + moves2[i][1]};
                 if (canMovePiece(board, dimension, curPiecePos, move, color, 1))
                 {
                     return 0;
@@ -238,9 +240,9 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
             for (int i = 0; i < dimension; i++)
             {
                 int moves3[4][2] = {{i, 0}, {0, i}, {-i, 0}, {0, -i}};
-                for (int i = 0; i < 4; i++)
+                for (int k = 0; k < 4; k++)
                 {
-                    int move[2] = {curPiecePos[0] + moves[i][0], curPiecePos[1] + moves[i][1]};
+                    int move[2] = {curPiecePos[0] + moves3[k][0], curPiecePos[1] + moves3[k][1]};
                     if (canMovePiece(board, dimension, curPiecePos, move, color, 1))
                     {
                         return 0;
@@ -252,9 +254,9 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
             for (int i = 0; i < dimension; i++)
             {
                 int moves4[8][2] = {{i, 0}, {0, i}, {-i, 0}, {0, -i}, {i, i}, {i, -i}, {-i, i}, {-i, -i}};
-                for (int i = 0; i < 8; i++)
+                for (int k = 0; k < 8; k++)
                 {
-                    int move[2] = {curPiecePos[0] + moves[i][0], curPiecePos[1] + moves[i][1]};
+                    int move[2] = {curPiecePos[0] + moves4[k][0], curPiecePos[1] + moves4[k][1]};
                     if (canMovePiece(board, dimension, curPiecePos, move, color, 1))
                     {
                         return 0;
@@ -266,7 +268,7 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
             int moves5[8][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
             for (int i = 0; i < 8; i++)
             {
-                int move[2] = {curPiecePos[0] + moves[i][0], curPiecePos[1] + moves[i][1]};
+                int move[2] = {curPiecePos[0] + moves5[i][0], curPiecePos[1] + moves5[i][1]};
                 if (canMovePiece(board, dimension, curPiecePos, move, color, 1))
                 {
                     return 0;
