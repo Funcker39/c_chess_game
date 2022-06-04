@@ -30,16 +30,29 @@ void game(piece board[12][12], int dimension, int turn)
 {
     do
     {
-
         printBoard(board, dimension);
 
         int correctMove = 0;
         int fromMove[2];
+        int inCheck = 0;
+        if (isInCheck(board, dimension, turn))
+        {
+            inCheck = 1;
+            if (isInCheckMate(board, dimension, turn))
+            {
+                gameOver = true;
+                printf("\n\nGAME OVER\n");
+                printf("\nVictoire des ");
+                turn ? printf("blancs.") : printf("noirs.");
+                return;
+            }
+        }
         do
         {
             correctMove = 0;
             printf("\nC'est au tour des ");
             turn ? printf("noirs.") : printf("blancs.");
+            if (inCheck) printf("\nAttention, vous êtes en échec.");
             printf("\nChoisissez une pièce à déplacer (A-%c):", dimension + 64);
 
             char input[3];
@@ -94,6 +107,7 @@ void game(piece board[12][12], int dimension, int turn)
         if (!correctMove)
         {
             printf("\nDéplacement interdit.");
+            sleep(0.3);
             continue;
         }
 

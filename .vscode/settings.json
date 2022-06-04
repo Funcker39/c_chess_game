@@ -19,6 +19,7 @@
         "numeric": "c",
         "ratio": "c",
         "cinttypes": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "utilities.h": "c"
     }
 }
