@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include "enum.c"
 
-
+//Fonction permettant d'initialiser le plateau
 void initBoard(piece board[12][12], int dimension) {
 
     // Assignation aléatoire de la position des 2 rois (noir et blanc)
@@ -16,16 +16,19 @@ void initBoard(piece board[12][12], int dimension) {
 
 
     for (int x = 0; x < dimension; x++) {
+        //Assignation aléatoire des pièces noires
         for (int y = 0; y < 2; y++) {
             board[x][y].color = black;
             
             if (board[x][y].type == king) continue;
             board[x][y].type = rand() % 5 + 2;
         }
+        //Assignation des cases vides
         for (int y = 2; y < dimension - 2; y++) {
             board[x][y].type = empty;
         }
 
+        //Assignation aléatoires des pièces blanches
         for (int y = dimension - 2; y < dimension; y++) {
             board[x][y].color = white;
             
@@ -34,14 +37,14 @@ void initBoard(piece board[12][12], int dimension) {
         }
     }
 
-
+    //Remplissage du reste du tableau avec des cases de type out (cases n'appartenant pas au plateau de jeu)
     for (int x = dimension; x < 12; x++) {
         for (int y = dimension; y < 12; y++) {
             board[x][y].type = out;
         }
     }
 };
-
+//Fonction permettant d'afficher le plateau
 void printBoard(piece board[12][12], int dimension) {
    
     printf("\n\n      ");
@@ -124,12 +127,13 @@ void printBoard(piece board[12][12], int dimension) {
         printf ("\n\n");
     }
 }
-
+//Fonction permettant de mettre a jour le plateau
 void updateBoard(piece board[12][12], int dimension, int from[2], int to[2]) {
-    piece selectedPiece = board[from[0]][from[1]];
-    //printf("%d",selectedPiece.color);
-    board[from[0]][from[1]].type = empty;
+    piece selectedPiece = board[from[0]][from[1]]; //Recuperation de la pièce de depart
+   
+    board[from[0]][from[1]].type = empty;//On vide la case de depart
+    //On rempli la case d'arrivée
     board[to[0]][to[1]].type = selectedPiece.type;
     board[to[0]][to[1]].color = selectedPiece.color;
-    //printf("%d", board[to[0]][to[1]].color);
+   
 }

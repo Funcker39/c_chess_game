@@ -1,5 +1,7 @@
 #include "globalVar.h"
+//Tableau globaux
 
+//Tout les types de pieces sous forme de char
 char pieceChars[8] = {
     '/',
     '-',
@@ -10,7 +12,7 @@ char pieceChars[8] = {
     'D',
     'R'
 };
-
+//Couleur en char
 char colorChars[2] = {
     'B',
     'N'

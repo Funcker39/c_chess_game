@@ -2,31 +2,23 @@
 #include "globalVar.h"
 #include "board.h"
 
+//Fonction principale permettant de verifier si une piece peut effectuer un deplacement
 int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int turnColor, int checkTest)
 {
-    piece selectedPiece = board[from[0]][from[1]];
+    piece selectedPiece = board[from[0]][from[1]];//Recuperation de la pièce
 
-    /*if (checkTest)
-    {
-        printf("\nVous voulez déplacer la pièce %c%c vers %c%d.",
-               pieceChars[selectedPiece.type], colorChars[selectedPiece.color],
-               numberToAsciiLetter(to[0]), dimension - to[1]);
-
-        printf("From %d;%d to %d;%d", from[0], from[1], to[0], to[1]);
-    }*/
-
-    //printf("\nTrying to move from %d;%d to %d;%d", from[0], from[1],to[0], to[1]);
     int canMove = 0;
 
     if (from[0] < 0 || from[0] >= dimension || from[1] < 0 || from[1] >= dimension ||
         to[0] < 0 || to[0] >= dimension || to[1] < 0 || to[1] >= dimension)
         return 0;
 
-    if (board[to[0]][to[1]].type != empty && board[to[0]][to[1]].color == selectedPiece.color)
+    if (board[to[0]][to[1]].type != empty && board[to[0]][to[1]].color == selectedPiece.color) //Verification de si la case destination n'est pas deja occupée par une piece de la meme couleur
     {
         return 0;
     }
-    switch (selectedPiece.type)
+
+    switch (selectedPiece.type)//En fonction du type de piece on appelle la fonction correspondante pour verifier si un mouvement est possible.
     {
     case pawn:
         if (canMovePawn(board, from, to, turnColor))
@@ -66,10 +58,10 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
         break;
     }
 
-    if (canMove && checkTest)
+    if (canMove && checkTest) //On verifie si le roi est en echec
     {
-        //printf("\nCanMove");
-        piece tmpBoard[12][12];
+       
+        piece tmpBoard[12][12]; //Copie du plateau dans un tableau temporaire
 
         for (int x = 0; x < 12; x++)
         {
@@ -78,19 +70,20 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
                 tmpBoard[x][y] = board[x][y];
             }
         }
-        // copyBoard(board, tmpBoard);
+       
 
-        updateBoard(tmpBoard, dimension, from, to);
+        updateBoard(tmpBoard, dimension, from, to); //On met a jour le plateau temporaire
 
-        return !isInCheck(tmpBoard, dimension, turnColor);
+        return !isInCheck(tmpBoard, dimension, turnColor);//On verifie si le roi est en echec dans le plateau temporaire (si isInCheck renvoie 1 on renvoie 0 car le mouvement n'est pas possible)
     }
 
     return canMove;
 }
 
+//Fonction permettant de verifier si la piece peut etre choisie ou non
 int canChoosePiece(piece board[12][12], int dimension, int piecePos[2], int turnColor)
 {
-    piece selectedPiece = board[piecePos[0]][piecePos[1]];
+    piece selectedPiece = board[piecePos[0]][piecePos[1]];//On recupere la piece
 
     switch (selectedPiece.type)
     {
@@ -116,11 +109,14 @@ void printBlockedPiece()
     // printf("\nLa case que vous voulez atteindre n'est pas accessible.");
 }
 
+//Fonction permettant de verifier si le roi est en echec
 int isInCheck(piece board[12][12], int dimension, int color)
 {
-    int playerKingPos[2];
-    int opponentPiecesPos[dimension * 2][2];
+    int playerKingPos[2]; //Coordonées du roi
+    int opponentPiecesPos[dimension * 2][2]; //Coordonées de toutes les pièces adverses
     int opponentPiecesIndex = 0;
+
+    //Remplissage des tableaux initalisées ci dessus
     for (int x = 0; x < dimension; x++)
     {
         for (int y = 0; y < dimension; y++)
@@ -144,6 +140,7 @@ int isInCheck(piece board[12][12], int dimension, int color)
         }
     }
 
+    //On verifie si les pièces adverse peuvent mettre le roi en echec en verifiant si elles peuvent atteindre le roi à l'aide de la fonction canMovePiece
     for (int k = 0; k < opponentPiecesIndex; k++)
     {
         if (canMovePiece(board, dimension, opponentPiecesPos[k], playerKingPos, !color, 0))
@@ -158,12 +155,14 @@ int isInCheck(piece board[12][12], int dimension, int color)
     }
     return 0;
 }
-
+//Fonction permettant de verifier l'echec et mat
 int isInCheckMate(piece board[12][12], int dimension, int color)
 {
-    int playerKingPos[2];
-    int allyPiecesPos[dimension * 2][2];
+    int playerKingPos[2]; //Coordonées du roi
+    int allyPiecesPos[dimension * 2][2];//Coordonées des pièces alliées
     int allyPiecesIndex = 0;
+
+    //Remplissage des tableaux initialisés ci-dessus
     for (int x = 0; x < dimension; x++)
     {
         for (int y = 0; y < dimension; y++)
@@ -186,6 +185,8 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
             }
         }
     }
+
+    //On determine toutes les cases atteignables par les alliés.
     for (int k = 0; k < allyPiecesIndex; k++)
     {
         int curPiecePos[2];
@@ -195,9 +196,10 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
 
         //printf("\ncurPiecePos:%d;%d", curPiecePos[0], curPiecePos[1]);
 
+        //Si une piece alliée peut se deplacer et empecher l'echec et mat on renvoie 0 si aucune ne peut se deplacer pour empecher lechec et mat on renvoie 1
         switch (curPiece.type)
         {
-        case pawn:
+        case pawn:;
             int dir = color ? 1 : -1;
             int moves[3][2] = {{1, dir}, {0, dir}, {-1, dir}};
             for (int i = 0; i < 3; i++)
@@ -225,7 +227,7 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
                 }
             }
             break;
-        case knight:
+        case knight:;
             int moves2[8][2] = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {-1, 2}, {1, -2}, {-1, -2}};
             for (int i = 0; i < 8; i++)
             {
@@ -264,7 +266,7 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
                 }
             }
             break;
-        case king:
+        case king:;
             int moves5[8][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
             for (int i = 0; i < 8; i++)
             {

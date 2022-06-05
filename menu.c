@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-
+//Fonction permettant d'afficher le menu d'accueil
 int menu(){
     printf("Bienvenue sur VeryBadChess\n");
     printf("Merci de choisir un nombre entre 1 et 3 pour effectuer une action\n");

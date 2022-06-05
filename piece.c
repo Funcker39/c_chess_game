@@ -1,4 +1,4 @@
-
+//Enum pour le type de piece
 enum pieceType {
     out = 0,
     empty = 1,
@@ -10,7 +10,7 @@ enum pieceType {
     king = 7
 };
 
-
+//Structure d'une piece (type + couleur)
 typedef struct {
     int type;
     int color;
