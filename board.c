@@ -46,7 +46,6 @@ void initBoard(piece board[12][12], int dimension) {
 };
 //Fonction permettant d'afficher le plateau
 void printBoard(piece board[12][12], int dimension) {
-   
     printf("\n\n      ");
     for (int x = 0; x < dimension; x++) {
         printf("%c     ", 65 + x);

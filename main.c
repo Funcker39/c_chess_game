@@ -39,6 +39,7 @@ int quit(char input,int turn){
 //Fonction principale du jeu
 void game(piece board[12][12], int dimension, int turn)
 {
+    int wrongMove = 0;
     do
     {
         int correctMove = 0;
@@ -61,11 +62,16 @@ void game(piece board[12][12], int dimension, int turn)
             inCheck = 0;
         }
 
-        //Affichage du tableau
-        printBoard(board, dimension);
+        printf("\e[1;1H\e[2J"); // On efface le plateau
+        printBoard(board, dimension); //Affichage du tableau
 
         do
         {
+            // Affichage d'un message d'erreur si le déplacement était mauvais 
+            if (wrongMove) {
+                printf("\nDéplacement interdit.");
+            }
+
             correctMove = 0;
             printf("\nC'est au tour des ");
             turn ? printf("noirs.") : printf("blancs.");
@@ -132,12 +138,10 @@ void game(piece board[12][12], int dimension, int turn)
 
         if (!correctMove)
         {
-            printf("\nDéplacement interdit.");
-            sleep(0.3);
+            wrongMove = 1;
             continue;
         }
 
-        printf("\e[1;1H\e[2J");//On efface le palteau
         updateBoard(board, dimension, fromMove, toMove);
         turn = !turn;
 
