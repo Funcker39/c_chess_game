@@ -140,21 +140,17 @@ int isInCheck(piece board[12][12], int dimension, int color)
         }
     }
 
-    //On verifie si les pièces adverse peuvent mettre le roi en echec en verifiant si elles peuvent atteindre le roi à l'aide de la fonction canMovePiece
+    //On verifie si les pièces adverses peuvent mettre le roi en echec en verifiant si elles peuvent atteindre le roi à l'aide de la fonction canMovePiece
     for (int k = 0; k < opponentPiecesIndex; k++)
     {
         if (canMovePiece(board, dimension, opponentPiecesPos[k], playerKingPos, !color, 0))
         {
-            /*printBoard(board, dimension);
-            printf("\nPos roi:%d-%d", playerKingPos[0], playerKingPos[1]);
-            printf("\nEchec à cause de %d-%d, type:%d, color:%d", opponentPiecesPos[k][0], opponentPiecesPos[k][1],
-                   board[opponentPiecesPos[k][0]][opponentPiecesPos[k][1]].type, board[opponentPiecesPos[k][0]][opponentPiecesPos[k][1]].color);*/
-            //printf("\nCe déplacement vous mets en échec.");
-            return 1;   
+            return 1;
         }
     }
     return 0;
 }
+
 //Fonction permettant de verifier l'echec et mat
 int isInCheckMate(piece board[12][12], int dimension, int color)
 {
@@ -186,7 +182,9 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
         }
     }
 
-    //On determine toutes les cases atteignables par les alliés.
+    // On essaie de déplacer chaque pièce alliée dans toutes les potentiels positions en vérifiant si le déplacement est possible
+    // et si le roi est toujours en échec.
+    // On return 0 (pas en échec et mat) si un des déplacements permet d'éviter l'échec sinon on return 1 (joueur en échec et mat) 
     for (int k = 0; k < allyPiecesIndex; k++)
     {
         int curPiecePos[2];
@@ -194,12 +192,10 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
         curPiecePos[1] = allyPiecesPos[k][1];
         piece curPiece = board[curPiecePos[0]][curPiecePos[1]];
 
-        //printf("\ncurPiecePos:%d;%d", curPiecePos[0], curPiecePos[1]);
-
-        //Si une piece alliée peut se deplacer et empecher l'echec et mat on renvoie 0 si aucune ne peut se deplacer pour empecher lechec et mat on renvoie 1
+        // On détermine grossièrement les potentiels cases à tester selon le type de pièce puis on les test toutes avec canMovePiece
         switch (curPiece.type)
         {
-        case pawn:;
+        case pawn:
             int dir = color ? 1 : -1;
             int moves[3][2] = {{1, dir}, {0, dir}, {-1, dir}};
             for (int i = 0; i < 3; i++)
@@ -211,7 +207,6 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
                 }
             }
             break;
-
         case bishop:
             for (int i = 0; i < dimension; i++)
             {
@@ -227,7 +222,7 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
                 }
             }
             break;
-        case knight:;
+        case knight:
             int moves2[8][2] = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {-1, 2}, {1, -2}, {-1, -2}};
             for (int i = 0; i < 8; i++)
             {
@@ -266,7 +261,7 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
                 }
             }
             break;
-        case king:;
+        case king:
             int moves5[8][2] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
             for (int i = 0; i < 8; i++)
             {
@@ -285,7 +280,6 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
 
 int canMovePawn(piece board[12][12], int from[2], int to[2], int color)
 {
-
     if (to[1] == from[1] + (color ? 1 : -1))
     {
         if (to[0] == from[0])
