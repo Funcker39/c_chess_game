@@ -283,7 +283,7 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
     return 1;
 }
 
-bool canMovePawn(piece board[12][12], int from[2], int to[2], int color)
+int canMovePawn(piece board[12][12], int from[2], int to[2], int color)
 {
 
     if (to[1] == from[1] + (color ? 1 : -1))
@@ -292,24 +292,24 @@ bool canMovePawn(piece board[12][12], int from[2], int to[2], int color)
         {
             if (board[to[0]][to[1]].type != empty)
             {
-                printBlockedPiece();
-                return false;
+          
+                return 0;
             }
-            return true;
+            return 1;
         }
         else if ((to[0] == from[0] + 1 || to[0] == from[0] - 1))
         {
             if (board[to[0]][to[1]].type != empty && board[to[0]][to[1]].type != out && board[to[0]][to[1]].color != color)
             {
-                return true;
+                return 1;
             }
         }
     }
 
-    return false;
+    return 0;
 }
 
-bool canMoveBishop(piece board[12][12], int from[2], int to[2])
+int canMoveBishop(piece board[12][12], int from[2], int to[2])
 {
     int horDelta = to[0] - from[0];
     int vertDelta = to[1] - from[1];
@@ -327,16 +327,15 @@ bool canMoveBishop(piece board[12][12], int from[2], int to[2])
 
             if (curPiece.type != empty)
             {
-                printBlockedPiece();
-                return false;
+                return 0;
             }
         }
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
-bool canMoveRook(piece board[12][12], int from[2], int to[2])
+int canMoveRook(piece board[12][12], int from[2], int to[2])
 {
 
     int vertDelta = to[1] - from[1];
@@ -355,11 +354,11 @@ bool canMoveRook(piece board[12][12], int from[2], int to[2])
 
             if (curPiece.type != empty)
             {
-                printBlockedPiece();
-                return false;
+               
+                return 0;
             }
         }
-        return true;
+        return 1;
     }
     if (to[1] == from[1])
     {
@@ -374,42 +373,42 @@ bool canMoveRook(piece board[12][12], int from[2], int to[2])
 
             if (curPiece.type != empty)
             {
-                printBlockedPiece();
-                return false;
+            
+                return 0;
             }
         }
-        return true;
+        return 1;
     }
 
-    return false;
+    return 0;
 }
 
-bool canMoveKnight(int from[2], int to[2])
+int canMoveKnight(int from[2], int to[2])
 {
     int moves[8][2] = {{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {-1, 2}, {1, -2}, {-1, -2}};
 
     int move[2] = {from[0] - to[0], from[1] - to[1]};
     for (int i = 0; i < 8; i++)
     {
-        if (move[0] == moves[i][0] && move[1] == moves[i][1]) return true;
+        if (move[0] == moves[i][0] && move[1] == moves[i][1]) return 1;
     }
-    return false;
+    return 0;
 }
 
-bool canMoveQueen(piece board[12][12], int from[2], int to[2])
+int canMoveQueen(piece board[12][12], int from[2], int to[2])
 {
     if (canMoveBishop(board, from, to) || canMoveRook(board, from, to))
     {
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }
 
-bool canMoveKing(int from[2], int to[2])
+int canMoveKing(int from[2], int to[2])
 {
     if ((abs(to[0] - from[0]) == abs(to[1] - from[1]) == 1) || (to[0] == from[0] - 1 && to[1] == from[1]) || (to[0] == from[0] + 1 && to[1] == from[1]) || (to[0] == from[0] && to[1] == from[1] - 1) || (to[0] == from[0] && to[1] == from[1] + 1))
     {
-        return true;
+        return 1;
     }
-    return false;
+    return 0;
 }

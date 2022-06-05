@@ -16,16 +16,27 @@ int gameOver = 0;
 
 int dimension = 0;
 
-int checkInput(char input, int turn)
+int save(char input, int turn)
 {
     if (input == 'S')
     {
         saveBoard(board, dimension, turn);
         return 1;
     }
+  
+    return 0;
+}
+int quit(char input,int turn){
+    if(input=='X'){
+        printf("Les ");
+        turn ? printf("noirs ") : printf("blancs ");
+        printf("abandonnent");
+        return 1;
+    }
     return 0;
 }
 
+//Fonction principale du jeu
 void game(piece board[12][12], int dimension, int turn)
 {
     do
@@ -33,12 +44,13 @@ void game(piece board[12][12], int dimension, int turn)
         int correctMove = 0;
         int fromMove[2];
         int inCheck = 0;
+        //On verifie si la partie est finie ou non.
         if (isInCheck(board, dimension, turn))
         {
             inCheck = 1;
             if (isInCheckMate(board, dimension, turn))
             {
-                gameOver = true;
+                gameOver = 1;
                 printf("\n========\nGAME OVER\n========");
                 printf("\nVictoire des ");
                 turn ? printf("blancs.") : printf("noirs.");
@@ -49,6 +61,7 @@ void game(piece board[12][12], int dimension, int turn)
             inCheck = 0;
         }
 
+        //Affichage du tableau
         printBoard(board, dimension);
 
         do
@@ -59,14 +72,20 @@ void game(piece board[12][12], int dimension, int turn)
             if (inCheck) printf("\nAttention, vous êtes en échec.");
             printf("\nChoisissez une pièce à déplacer (A-%c):", dimension + 64);
 
+            //Verification de l'input (sauvegarde ou quitter)
             char input[3];
             scanf("%s", &input);
-            if (checkInput(input[0], turn))
+            if (save(input[0], turn))
             {
                 continue;
             }
+            if(quit(input[0],turn)){
+                
+                return;
+            }
 
-            fromMove[0] = input[0] - 65;
+            //Récuperation des coordonées de la piece selectionne 
+            fromMove[0] = input[0] - 65;//Conversion de la lettre en un chiffre
             char secondPart[2] = {input[1], input[2]};
             fromMove[1] = dimension - atoi(secondPart);
 
@@ -89,11 +108,15 @@ void game(piece board[12][12], int dimension, int turn)
 
             char input[3];
             scanf("%s", &input);
-            if (checkInput(input[0], turn))
+            if (save(input[0], turn))
             {
                 continue;
             }
+            if(quit(input[0],turn)){
+                return;
+            }
 
+            //Recuperation de la case cible
             toMove[0] = input[0] - 65;
             char secondPart[2] = {input[1], input[2]};
             toMove[1] = dimension - atoi(secondPart);
@@ -104,8 +127,7 @@ void game(piece board[12][12], int dimension, int turn)
                 correctMove = 1;
 
         } while (!correctMove);
-
-        //printf("\nMoving %d;%d to %d;%d", fromMove[0], fromMove[1], toMove[0], toMove[1]);
+        //On verifie si le mouvement peut etre effectué
         correctMove = canMovePiece(board, dimension, fromMove, toMove, turn, 1);
 
         if (!correctMove)
@@ -115,6 +137,7 @@ void game(piece board[12][12], int dimension, int turn)
             continue;
         }
 
+        printf("\e[1;1H\e[2J");//On efface le palteau
         updateBoard(board, dimension, fromMove, toMove);
         turn = !turn;
 
@@ -153,8 +176,6 @@ void main()
         printf("Merci d'avoir jouer, au revoir ! ");
         system("exit");
         break;
-    default:
-        printf("Merci de choisir un nombre entre 1 et 3 pour effectuer une action");
-        break;
+
     }
 }
