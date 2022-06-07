@@ -21,7 +21,7 @@ int canMovePiece(piece board[12][12], int dimension, int from[2], int to[2], int
     switch (selectedPiece.type) // En fonction du type de piece on appelle la fonction correspondante pour verifier si un mouvement est possible.
     {
     case pawn:
-        if (canMovePawn(board, from, to, turnColor))
+        if (canMovePawn(board, dimension, from, to, turnColor))
         {
             canMove = 1;
         }
@@ -101,11 +101,6 @@ int canChoosePiece(piece board[12][12], int dimension, int piecePos[2], int turn
     }
 
     return 1;
-}
-
-void printBlockedPiece()
-{
-    // printf("\nLa case que vous voulez atteindre n'est pas accessible.");
 }
 
 // Fonction permettant de verifier si le roi est en echec
@@ -294,15 +289,19 @@ int isInCheckMate(piece board[12][12], int dimension, int color)
     return 1;
 }
 
-int canMovePawn(piece board[12][12], int from[2], int to[2], int color)
+int canMovePawn(piece board[12][12], int dimension, int from[2], int to[2], int color)
 {
+    // Possibilité de monter de 2 cases si position de départ = 2e ligne
+    if (from[1] == (!color ? dimension - 2 : 1) && from[0] == to[0] && to[1] == (!color ? dimension - 4 : 3)) {
+        return 1;
+    }
+
     if (to[1] == from[1] + (color ? 1 : -1))
     {
         if (to[0] == from[0])
         {
             if (board[to[0]][to[1]].type != empty)
             {
-
                 return 0;
             }
             return 1;

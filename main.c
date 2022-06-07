@@ -135,10 +135,10 @@ void game(piece board[12][12], int dimension, int turn)
         } while (!correctMove);
         //On verifie si le mouvement peut etre effectué
         correctMove = canMovePiece(board, dimension, fromMove, toMove, turn, 1);
+        wrongMove = !correctMove;
 
         if (!correctMove)
         {
-            wrongMove = 1;
             continue;
         }
 
